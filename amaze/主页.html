@@ -24,11 +24,17 @@
     <script>
         hidden_layers=new Array();
         var distance;
+        function makeSVG(tag, attrs) {
+            var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
+            for (var k in attrs)
+                el.setAttribute(k, attrs[k]);
+            return el;
+        }
         function make_line(){
             var div_left=$('svg').offset().left;
             var div_top=$('svg').offset().top;
             var num_neuron=1;
-            $('#path').empty();
+            $('svg').empty();
             if(hidden_layers.length>=2){
                 for(var i=0;i<hidden_layers.length-1;i++){
                     for(var fir=num_neuron;fir<hidden_layers[i]+num_neuron;fir++){
@@ -37,8 +43,9 @@
                             var top_1=$('#'+fir).offset().top+20-div_top;
                             var left_2=$('#'+sec).offset().left-div_left;
                             var top_2=$('#'+sec).offset().top+20-div_top;
-                            var path='<polyline points="'+left_1+','+top_1+' '+left_2+','+top_2+'"'+' style="fill:none;stroke:rgb(56, 103, 214);"></polyline>';
-                            $('#path').append(path);
+                            var path=left_1+','+top_1+' '+left_2+','+top_2;
+                            var line=makeSVG('polyline',{points:path,stroke:'rgb(56, 103, 214)'});
+                            $('svg').append(line);
                         }
                     }
                     num_neuron+=hidden_layers[i];
@@ -204,16 +211,20 @@
         <div id="slider"></div>
         <p class="body-font" id="dropout">当前dropout值为:0%</p>
         <p class="body-font">Batch Size</p>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="请输入正整数">
+
+        <div class="am-input-group">
+            <span class="am-input-group-label"></span>
+            <input type="text" class="am-form-field" placeholder="请输入正整数">
         </div>
         <p class="body-font">Learning Rate</p>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="请输入非负浮点数">
+        <div class="am-input-group">
+            <span class="am-input-group-label"></span>
+            <input type="text" class="am-form-field" placeholder="请输入非负整数">
         </div>
         <p class="body-font">Epochs</p>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="请输入正整数">
+        <div class="am-input-group">
+            <span class="am-input-group-label"></span>
+            <input type="text" class="am-form-field" placeholder="请输入正整数">
         </div>
         <p class="body-font">Regularization</p>
         <select  data-am-selected>
