@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>神经网络可视化</title>
+    <script src="js/jQuery.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap-theme.css">
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <script src="assets/js/amazeui.ie8polyfill.js"></script>
+    <script src="assets/js/amazeui.js"></script>
+    <script src="assets/js/amazeui.widgets.helper.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/handlebars.min.js"></script>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/amazeui.css">
+    <link rel="stylesheet" href="assets/css/amazeui.flat.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="import.css">
+    <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+    <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script>
+        hidden_layers=new Array();
+        var distance;
+        function make_line(){
+            var div_left=$('svg').offset().left;
+            var div_top=$('svg').offset().top;
+            var num_neuron=1;
+            $('#path').empty();
+            if(hidden_layers.length>=2){
+                for(var i=0;i<hidden_layers.length-1;i++){
+                    for(var fir=num_neuron;fir<hidden_layers[i]+num_neuron;fir++){
+                        for(var sec=num_neuron+hidden_layers[i];sec<hidden_layers[i+1]+num_neuron+hidden_layers[i];sec++){
+                            var left_1=$('#'+fir).offset().left+40-div_left;
+                            var top_1=$('#'+fir).offset().top+20-div_top;
+                            var left_2=$('#'+sec).offset().left-div_left;
+                            var top_2=$('#'+sec).offset().top+20-div_top;
+                            var path='<polyline points="'+left_1+','+top_1+' '+left_2+','+top_2+'"'+' style="fill:none;stroke:rgb(56, 103, 214);"></polyline>';
+                            $('#path').append(path);
+                        }
+                    }
+                    num_neuron+=hidden_layers[i];
+                }
+            }
+        }
+        $(function(){
+            $('#slider').slider({
+                range:"min",
+                min:0,
+                max:100,
+                step:10,
+                slide:function(event,ui){
+                    $('#dropout').html('当前dropout值为:'+ui.value+'%')
+                }
+            });
+        });
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
+        $(document).on('mousedown','.move',function(event){
+            if(hidden_layers.length!==0){
+                divPageL=$('.neuron-network').offset().left;
+                divPageT=$('.neuron-network').offset().top;
+                divPageR=divPageL+640;
+                divPageB=divPageT+400;
+                var _this=$(event.currentTarget);
+                oldPageX=event.pageX;
+                oldPageY=event.pageY;
+                cloneHtml=$(_this).clone();
+                cloneHtml.html("");
+                cloneHtml.addClass('neuron-hover');
+                oldoffset=$(_this).offset();
+                $(document.body).append(cloneHtml);
+                cloneHtml.css({
+                    position:'absolute',
+                    left:oldoffset.left,
+                    top:oldoffset.top
+                });
+                $(document).mousemove(function(e){
+                    var currPageX = e.pageX;
+                    var currPageY = e.pageY;
+                    var movePageX = currPageX - oldPageX;
+                    var movePageY = currPageY - oldPageY;
+                    cloneHtml.css({
+                        position: 'absolute',
+                        left: oldoffset.left + movePageX,
+                        top: oldoffset.top + movePageY,
+                        'z-index': 5
+                    });
+                });
+                $(document).mouseup(function () {
+                    var left=cloneHtml.offset().left;
+                    var top=cloneHtml.offset().top;
+                    cloneHtml.css({
+                        left: left-divPageL,
+                        top: top-divPageT,
+                    });
+                    cloneHtml.removeClass('neuron-hover move');
+                    cloneHtml.addClass('neuron_1');
+                    var remain=left>=divPageL&&left<=divPageR-40&&top>=divPageT&&top<=divPageB-40;
+                    if(remain){
+                        $('.neuron-network').append(cloneHtml);
+                    }
+                    else{
+                        cloneHtml.remove();
+                    }
+                    $(document).off('mousemove');
+                });
+            }
+            else{
+                alert('隐藏层数为0,请先添加隐藏层！');
+            }
+        });
+        $(document).ready(function(){
+            var sum_neuron=0;
+            for(var i=0;i<hidden_layers.length;i++){
+                sum_neuron+=hidden_layers[i];
+            }
+            $('#add_layers').click(function(){
+                if(hidden_layers.length<=5) {
+                    var add_neuron_1='<div class="neuron neuron_1 temp-1" style="position:absolute;"></div>';
+                    var add_neuron_2='<div class="neuron neuron_1 temp-2" style="position:absolute;"></div>';
+                    $('svg').before(add_neuron_1);
+                    $('svg').before(add_neuron_2);
+                    var temp_1=sum_neuron+1;
+                    var temp_2=sum_neuron+2;
+                    $('.temp-1').attr('id',temp_1);
+                    $('.temp-2').attr('id',temp_2);
+                    sum_neuron+=2;
+                    hidden_layers.push(2);
+                    distance=(640-40*hidden_layers.length)/(hidden_layers.length+1);
+                    var left=(hidden_layers.length-1)*40+(hidden_layers.length)*distance;
+                    $('.temp-1').css({'left':left+'px','top':0});
+                    $('.temp-2').css({'left':left+'px','top':'60px'});
+                    var each_layer=1;
+                    for(var i=0;i<hidden_layers.length-1;i++){
+                        var temp_left=(i+1)*distance+i*40;
+                        for(var j=0;j<hidden_layers[i];j++){
+                            $('#'+each_layer).css('left',temp_left+'px');
+                            each_layer+=1;
+                        }
+                    }
+                    $('.temp-1').removeClass('temp-1');
+                    $('.temp-2').removeClass('temp-2');
+                    make_line();
+                }
+                else
+                    alert('已达到最大隐藏层数！');
+            });
+            $('#del_layers').click(function(){
+                if(hidden_layers.length>0){
+                    for(var i=0;i<hidden_layers[hidden_layers.length-1];i++){
+                        var id=sum_neuron-i;
+                        $('#'+id).remove();
+                    }
+                    sum_neuron-=hidden_layers[hidden_layers.length-1];
+                    hidden_layers.pop();
+                    distance=(640-40*hidden_layers.length)/(hidden_layers.length+1);
+                    var each_layer=1;
+                    for(var i=0;i<hidden_layers.length;i++){
+                        var temp_left=(i+1)*distance+i*40;
+                        for(var j=0;j<hidden_layers[i];j++){
+                            $('#'+each_layer).css('left',temp_left+'px');
+                            each_layer+=1;
+                        }
+                    }
+                    make_line();
+                }
+                else
+                    alert('隐藏层数已为0，不能再减！');
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="col-md-1"></div>
+    <div class="col-md-2" style="padding-top:18px;">
+        <h1 style="float:right"><b>神经网络可视化</b></h1>
+    </div>
+    <div class="col-md-2" style="padding-top:19px;">
+        <a href="#"><img src="logo.png" class="am-radius navbar-logo"></a>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-1" style="padding-top:12px;">
+        <a href="#"><p class="user-icon" style="float:right"></p></a>
+    </div>
+    <div class="col-md-2" style="padding-top:14px;" data-am-dropdown>
+        <span><a href="#" class="a-font am-dropdown-toggle am-btn">吕哲&nbsp;&nbsp;&nbsp;&nbsp;<span class="am-icon-caret-down"></span></a></span>
+        <ul class="am-dropdown-content">
+            <li><a href="#">Sherry</a></li>
+            <li><a href="#">老纪</a></li>
+            <li><a href="#">译文</a></li>
+        </ul>
+    </div>
+
+</div>
+<div class="col-md-1"></div>
+<div class="col-md-2 body-nav nav-button">
+    <h2 class="parameter"><b>参数设置</b></h2>
+    <form action="#" method="post" class="bs-example bs-example-form">
+        <p class="body-font">Dropout</p>
+        <div id="slider"></div>
+        <p class="body-font" id="dropout">当前dropout值为:0%</p>
+        <p class="body-font">Batch Size</p>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="请输入正整数">
+        </div>
+        <p class="body-font">Learning Rate</p>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="请输入非负浮点数">
+        </div>
+        <p class="body-font">Epochs</p>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="请输入正整数">
+        </div>
+        <p class="body-font">Regularization</p>
+        <select  data-am-selected>
+            <option value="l1">L1</option>
+            <option value="l2">L2</option>
+            <option value="none">None</option>
+        </select>
+        <p class="body-font">Activation</p>
+        <select  data-am-selected>
+            <option value="relu">ReLU</option>
+            <option value="sigmoid">sigmoid</option>
+            <option value="softmax">softmax</option>
+            <option value="maxout">maxout</option>
+        </select>
+        <p class="body-font">Optimization Name</p>
+        <select  data-am-selected>
+            <option value="sgd">Stochastic Gradient Descent</option>
+            <option value="rmsprop">RMSprop</option>
+            <option value="adadelta">Adadelta</option>
+            <option value="adagrad">Adagrad</option>
+        </select>
+        <p class="body-font">Metrics</p>
+        <select data-am-selected>
+            <option value="accuracy">Accuracy</option>
+            <option value="binary_accuracy">Binary Accuracy</option>
+            <option value="mae">Mae</option>
+            <option value="mse">Mse</option>
+        </select>
+        <p class="body-font">Loss</p>
+        <select data-am-selected>
+            <option value="binary_crossentropy">Binary CrossEntropy</option>
+        </select>
+        <p class="body-font">Problem Type</p>
+        <select data-am-selected>
+            <option value="regression">Regression</option>
+            <option value="classification">Classification</option>
+            <option value="sequential">Sequential</option>
+            <option value="tagging">Tagging</option>
+        </select><br><br>
+        <div class="col-md-6 body-nav nav-button">
+            <a href="#" class="a-button am-btn am-radius check-button">重置
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="#" class="a-button am-btn  am-radius check-button">确认
+                <i class="am-icon-check-circle"></i>
+            </a>
+        </div>
+        <div style="height:100px;"></div>
+    </form>
+</div>
+<div class="col-md-6">
+    <div>
+        <div class="neuron add-neuron move" id="base-neuron" data-toggle="tooltip" data-placement="top" title="拖动可增加神经元">
+            <p style="padding-top:5px;"><b>元</b></p>
+        </div>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="am-btn am-btn-primary button-size"  data-toggle="tooltip" data-placement="top" title="开始运行">
+            <b class="start">Start</b>
+        </button>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" data-toggle="tooltip" data-placement="top" title="保存神经网络结构">保存状态</a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" data-toggle="tooltip" data-placement="top" title="导出网络结构">导出模型</a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" data-toggle="tooltip" data-placement="top" title="查看源代码">查看代码</a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" id="add_layers"
+           data-toggle="tooltip" data-placement="top" title="增加隐藏层">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" id="del_layers"
+           data-toggle="tooltip" data-placement="top" title="减少隐藏层">
+            <span class="glyphicon glyphicon-minus"></span>
+        </a>
+    </div><br>
+    <div class="col-md-12 body-nav">
+        <h1 class="body-font" style="font-family: 黑体">隐藏层神经元结构</h1>
+    </div><br><br>
+    <div class="neuron-network" id="neuron-div">
+        <svg style="height:400px;width:640px;">
+            <g id="path">
+                <!--<polyline points="40,20 100,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,20 100,140" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,20 100,200" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,20 100,260" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,20 100,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,80 100,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,80 100,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,80 100,140" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,80 100,200" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="40,80 100,260" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+
+                <!--<polyline points="140,20 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,80 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,200 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,140 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,260 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+
+                <!--<polyline points="140,20 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,80 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,200 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,140 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+                <!--<polyline points="140,260 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
+            </g>
+        </svg>
+    </div>
+</div>
+<div class="col-md-3 body-nav">
+    <h2 class="parameter"><b>实时数据</b></h2>
+    <br>
+    <div class="col-md-6 nav-button data-right">
+        <p class="body-font">图ID</p>
+        <p class="body-font">神经元个数</p>
+        <p class="body-font">输入数据量</p>
+        <p class="body-font">Optimizer</p>
+        <p class="body-font">网络类型</p>
+    </div>
+    <div class="col-md-6 data-left">
+        <p class="body-font" id="graph_id">12345</p>
+        <p class="body-font" id="neuron_num">12</p>
+        <p class="body-font" id="input_data_num">7071条</p>
+        <p class="body-font" id="optimizer">Gradient</p>
+        <p class="body-font" id="neuron_class">多层前馈网络</p>
+    </div>
+</div>
+</body>
+</html>

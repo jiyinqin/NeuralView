@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="js/jQuery.js"></script>
+    <link rel="stylesheet" href="import.css">
+    <title>Sherry</title>
+
+    <script>
+        var oldPageX,oldPageY,cloneHtml,dragging;
+        var layer=4;
+        var layers=[0,0,0,0,0];
+        $(document).on('mousedown','.move',function(event){
+            dragging=true;
+            if(dragging){
+                var _this=$(event.currentTarget);
+                oldPageX=event.pageX;
+                oldPageY=event.pageY;
+                cloneHtml=$(_this).clone();
+                oldoffset=$(_this).offset();
+                $(document.body).append(cloneHtml);
+                cloneHtml.css({
+                    position:'fixed',
+                    left:oldoffset.left,
+                    top:oldoffset.top
+                });
+            }
+        });
+        $(document).on({
+            'mousemove':function(event){
+                if(dragging){
+                    var currPageX=event.pageX;
+                    var currPageY=event.pageY;
+                    var movePageX=currPageX-oldPageX;
+                    var movePageY=currPageY-oldPageY;
+                    cloneHtml.css({
+                        opacity:'0.8',
+                        position:'fixed',
+                        left:oldoffset.left+movePageX,
+                        top:oldoffset.top+movePageY,
+                        'z-index':5
+                    });
+                    var targetBox1=$('#1');
+                    var targetBox2=$('#2');
+                    var targetBox3=$('#3');
+                    var targetBox4=$('#4');
+                    var div_width=targetBox1.width();
+                    var targetBoxOffset1=targetBox1.offset();
+                    var targetBoxOffset2=targetBox2.offset();
+                    var targetBoxOffset3=targetBox3.offset();
+                    var targetBoxOffset4=targetBox4.offset();
+                    if(currPageX>targetBoxOffset1.left&&
+                    currPageX<targetBoxOffset1.left+div_width&&
+                    currPageY>targetBoxOffset1.top&&
+                    currPageY<targetBoxOffset1.top+300){
+                        targetBox1.css('border','2px dashed blue');
+                        targetBox2.css('border','2px dashed #ccc');
+                        targetBox3.css('border','2px dashed #ccc');
+                        targetBox4.css('border','2px dashed #ccc');
+                    }
+                    else if(currPageX>targetBoxOffset2.left&&
+                        currPageX<targetBoxOffset2.left+div_width&&
+                        currPageY>targetBoxOffset2.top&&
+                        currPageY<targetBoxOffset2.top+300){
+                        targetBox1.css('border','2px dashed #ccc');
+                        targetBox2.css('border','2px dashed blue');
+                        targetBox3.css('border','2px dashed #ccc');
+                        targetBox4.css('border','2px dashed #ccc');
+                    }
+                    else if(currPageX>targetBoxOffset3.left&&
+                        currPageX<targetBoxOffset3.left+div_width&&
+                        currPageY>targetBoxOffset3.top&&
+                        currPageY<targetBoxOffset3.top+300){
+                        targetBox1.css('border','2px dashed #ccc');
+                        targetBox2.css('border','2px dashed #ccc');
+                        targetBox3.css('border','2px dashed blue');
+                        targetBox4.css('border','2px dashed #ccc');
+                    }
+                    else if(currPageX>targetBoxOffset4.left&&
+                        currPageX<targetBoxOffset4.left+div_width&&
+                        currPageY>targetBoxOffset4.top&&
+                        currPageY<targetBoxOffset4.top+300){
+                        targetBox1.css('border','2px dashed #ccc');
+                        targetBox2.css('border','2px dashed #ccc');
+                        targetBox3.css('border','2px dashed #ccc');
+                        targetBox4.css('border','2px dashed blue');
+                    }else{
+                        targetBox1.css('border','2px dashed #ccc');
+                        targetBox2.css('border','2px dashed #ccc');
+                        targetBox3.css('border','2px dashed #ccc');
+                        targetBox4.css('border','2px dashed #ccc');
+                    }
+                }
+            }
+        });
+        $(document).on('mouseup','.move',function(event){
+            var currPageX=event.pageX;
+            var currPageY=event.pageY;
+            var targetBox=$('.test');
+            var targetBoxOffset=targetBox.offset();
+            var neuron=$(event.target);
+            var div_=$('#1');
+            var div_width=div_.width();
+            if(!(currPageX>targetBoxOffset.left&&
+            currPageX<targetBoxOffset.left+4*div_width&&
+            currPageY>targetBoxOffset.top&&
+            currPageY<targetBoxOffset.top+300)){
+                cloneHtml.remove();
+                dragging=false;
+                return;
+            };
+            if(currPageX>targetBoxOffset.left&&
+                currPageX<targetBoxOffset.left+div_width&&
+                currPageY>targetBoxOffset.top&&
+                currPageY<targetBoxOffset.top+300){
+                var ele=$('#1');
+                neuron.css('position','static');
+                neuron.css({'margin':'0 auto 10px auto'});
+                ele.append(cloneHtml);
+                layers[0]++;
+                neuron.attr('id','neuron'+layers[0]);
+                ele.css('border','2px dashed #ccc');
+                if(layers[1]!==0){
+
+                }
+            }
+            else if(currPageX>targetBoxOffset.left+div_width&&
+                currPageX<targetBoxOffset.left+2*div_width&&
+                currPageY>targetBoxOffset.top&&
+                currPageY<targetBoxOffset.top+300){
+                var ele=$('#2');
+                neuron.css('position','static');
+                neuron.css({'margin':'0 auto 10px auto'});
+                ele.append(cloneHtml);
+                layers[1]++;
+                ele.css('border','2px dashed #ccc');
+                var neuronOffset=neuron.offset();
+                var new_x=neuronOffset.left+20;
+                var new_y=neuronOffset.top+20;
+                if(layers[0]!==0){
+                    for (var i=1;i<=layers[0];i++){
+                        var x=$('#'+'neuron'+i);
+                        var position=x.offset();
+                        var pos_x=position.left+20;
+                        var pos_y=position.top+20;
+                        var line=$('<svg><line x1="20" y1="20" x2="50" y2="50" style="z-index: 99;stroke-width: 2px;stroke:black"</svg>');
+                        // $('.test-1').append(line);
+                    }
+
+                }
+            }
+            else if(currPageX>targetBoxOffset.left+2*div_width&&
+                currPageX<targetBoxOffset.left+3*div_width&&
+                currPageY>targetBoxOffset.top&&
+                currPageY<targetBoxOffset.top+300){
+                var ele=$('#3');
+                neuron.css('position','static');
+                neuron.css({'margin':'0 auto 10px auto'});
+                ele.append(cloneHtml);
+                layers[2]++;
+                ele.css('border','2px dashed #ccc');
+
+            }
+            else if(currPageX>targetBoxOffset.left+3*div_width&&
+                currPageX<targetBoxOffset.left+4*div_width&&
+                currPageY>targetBoxOffset.top&&
+                currPageY<targetBoxOffset.top+300){
+                var ele=$('#4');
+                neuron.css('position','static');
+                neuron.css({'margin':'0 auto 10px auto'});
+                ele.append(cloneHtml);
+                layers[3]++;
+                ele.css('border','2px dashed #ccc');
+            }
+            $(event.target).removeClass('move');
+            dragging=false;
+        });
+        $(document).on('click','button',function(event){
+            layer++;
+            var new_div=$('<div class="test-1" id=layer></div>');
+            $('.test').append(new_div);
+        })
+    </script>
+</head>
+<body>
+<div class="neuron"></div>
+</body>
+</html>

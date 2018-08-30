@@ -1,0 +1,24 @@
+body{overflow-y: auto;}
+a:hover{text-decoration: none;}
+.navbar-logo{height:28px;width:50px;margin-bottom:5px;}
+.user-icon{margin-top:4px;height:34px;width: 34px;border-radius: 17px;border:2px black solid;background-color: white;float:left}
+.a-font{color:black;}
+.body-nav{text-align:center;}
+.nav-button{border-right:1px darkgray solid;}
+.parameter{color:rgb(56, 103, 214)}
+.body-font{color:gray}
+.check-button{border-radius: 15px;border:1px rgb(56, 103, 214) solid}
+.a-button{color:rgb(56, 103, 214);height:40px;}
+.button-size{height:40px;}
+.start{font-size:18px;}
+.neuron{height:40px;width:40px;border-radius: 20px;border:rgb(56, 103, 214) 1px solid;text-align: center;color:rgb(56, 103, 214);}
+.add-neuron{float:left;}
+.data-right{text-align:right;}
+.data-left{text-align:left;}
+.layers{border:1px rgb(56, 103, 214) solid;border-radius: 30px;}
+.neuron-network{background-color: whitesmoke;position:absolute;}
+.neuron-hover{box-shadow:0 0 2px 2px rgb(56, 103, 214);}
+
+
+
+
