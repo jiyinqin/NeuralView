@@ -66,11 +66,8 @@
             if(i<hidden_layers.length){
                 var sum_neuron=get_neuron_num(i)+1;
                 var all_neuron=get_neuron_num(hidden_layers.length-1)+hidden_layers[hidden_layers.length-1];
-                console.log(sum_neuron);
-                console.log(all_neuron);
-                var new_k;
+                var new_k=sum_neuron+1;
                 for(var k=sum_neuron;k<=all_neuron;k++){
-                    // new_k=k+1;
                     $('#'+k).attr("id",k+1);
                 }
             }
