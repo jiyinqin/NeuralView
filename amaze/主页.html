@@ -52,6 +52,29 @@
                 }
             }
         }
+        function get_neuron_num(i){
+            if(i>=hidden_layers.length){
+                return false;
+            }
+            var sum_neuron=0;
+            for(var k=0;k<i;k++){
+                sum_neuron+=hidden_layers[k];
+            }
+            return sum_neuron;
+        }
+        function id_sort(i){  //通过拖拽添加的神经元在第i层
+            if(i<hidden_layers.length){
+                var sum_neuron=get_neuron_num(i)+1;
+                var all_neuron=get_neuron_num(hidden_layers.length-1)+hidden_layers[hidden_layers.length-1];
+                console.log(sum_neuron);
+                console.log(all_neuron);
+                var new_k;
+                for(var k=sum_neuron;k<=all_neuron;k++){
+                    // new_k=k+1;
+                    $('#'+k).attr("id",k+1);
+                }
+            }
+        }
         $(function(){
             $('#slider').slider({
                 range:"min",
@@ -66,17 +89,17 @@
         $(function () { $("[data-toggle='tooltip']").tooltip(); });
         $(document).on('mousedown','.move',function(event){
             if(hidden_layers.length!==0){
-                divPageL=$('.neuron-network').offset().left;
-                divPageT=$('.neuron-network').offset().top;
-                divPageR=divPageL+640;
-                divPageB=divPageT+400;
+                var divPageL=$('.neuron-network').offset().left;
+                var divPageT=$('.neuron-network').offset().top;
+                var divPageR=divPageL+640;
+                var divPageB=divPageT+400;
                 var _this=$(event.currentTarget);
                 oldPageX=event.pageX;
                 oldPageY=event.pageY;
                 cloneHtml=$(_this).clone();
                 cloneHtml.html("");
                 cloneHtml.addClass('neuron-hover');
-                oldoffset=$(_this).offset();
+                var oldoffset=$(_this).offset();
                 $(document.body).append(cloneHtml);
                 cloneHtml.css({
                     position:'absolute',
@@ -127,18 +150,23 @@
                 if(hidden_layers.length<=5) {
                     var add_neuron_1='<div class="neuron neuron_1 temp-1" style="position:absolute;"></div>';
                     var add_neuron_2='<div class="neuron neuron_1 temp-2" style="position:absolute;"></div>';
+                    var add_neuron_3='<div class="neuron neuron_1 temp-3" style="position:absolute;"></div>'
                     $('svg').before(add_neuron_1);
                     $('svg').before(add_neuron_2);
+                    $('svg').before(add_neuron_3);
                     var temp_1=sum_neuron+1;
                     var temp_2=sum_neuron+2;
+                    var temp_3=sum_neuron+3;
                     $('.temp-1').attr('id',temp_1);
                     $('.temp-2').attr('id',temp_2);
-                    sum_neuron+=2;
-                    hidden_layers.push(2);
+                    $('.temp-3').attr('id',temp_3);
+                    sum_neuron+=3;
+                    hidden_layers.push(3);
                     distance=(640-40*hidden_layers.length)/(hidden_layers.length+1);
                     var left=(hidden_layers.length-1)*40+(hidden_layers.length)*distance;
                     $('.temp-1').css({'left':left+'px','top':0});
                     $('.temp-2').css({'left':left+'px','top':'60px'});
+                    $('.temp-3').css({'left':left+'px','top':'120px'});
                     var each_layer=1;
                     for(var i=0;i<hidden_layers.length-1;i++){
                         var temp_left=(i+1)*distance+i*40;
@@ -149,6 +177,7 @@
                     }
                     $('.temp-1').removeClass('temp-1');
                     $('.temp-2').removeClass('temp-2');
+                    $('.temp-3').removeClass('temp-3');
                     make_line();
                 }
                 else
@@ -175,6 +204,9 @@
                 }
                 else
                     alert('隐藏层数已为0，不能再减！');
+            });
+            $('#test').click(function(){
+                id_sort(2);
             })
         })
     </script>
@@ -281,7 +313,7 @@
         <div class="neuron add-neuron move" id="base-neuron" data-toggle="tooltip" data-placement="top" title="拖动可增加神经元">
             <p style="padding-top:5px;"><b>元</b></p>
         </div>&nbsp;&nbsp;&nbsp;
-        <button type="button" class="am-btn am-btn-primary button-size"  data-toggle="tooltip" data-placement="top" title="开始运行">
+        <button type="button" class="am-btn am-btn-primary button-size"  data-toggle="tooltip" data-placement="top" title="开始运行"  id="test">
             <b class="start">Start</b>
         </button>&nbsp;&nbsp;&nbsp;
         <a class="a-button am-btn  am-radius check-button" data-toggle="tooltip" data-placement="top" title="保存神经网络结构">保存状态</a>&nbsp;&nbsp;&nbsp;
@@ -302,28 +334,6 @@
     <div class="neuron-network" id="neuron-div">
         <svg style="height:400px;width:640px;">
             <g id="path">
-                <!--<polyline points="40,20 100,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,20 100,140" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,20 100,200" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,20 100,260" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,20 100,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,80 100,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,80 100,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,80 100,140" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,80 100,200" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="40,80 100,260" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-
-                <!--<polyline points="140,20 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,80 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,200 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,140 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,260 200,20" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-
-                <!--<polyline points="140,20 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,80 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,200 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,140 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
-                <!--<polyline points="140,260 200,80" style="fill:none;stroke:rgb(56, 103, 214);"></polyline>-->
             </g>
         </svg>
     </div>
