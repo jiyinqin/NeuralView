@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>神经网络可视化</title>
+    <script src="js/jQuery.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap-theme.css">
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <script src="assets/js/amazeui.ie8polyfill.js"></script>
+    <script src="assets/js/amazeui.js"></script>
+    <script src="assets/js/amazeui.widgets.helper.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/handlebars.min.js"></script>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/amazeui.css">
+    <link rel="stylesheet" href="assets/css/amazeui.flat.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="import.css">
+    <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+    <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="function.js"></script>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="col-md-1"></div>
+    <div class="col-md-2" style="padding-top:18px;">
+        <h1 style="float:right"><b>神经网络可视化</b></h1>
+    </div>
+    <div class="col-md-2" style="padding-top:19px;">
+        <a href="#"><img src="logo.png" class="am-radius navbar-logo"></a>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-1" style="padding-top:12px;">
+        <a href="#"><p class="user-icon" style="float:right"></p></a>
+    </div>
+    <div class="col-md-2" style="padding-top:14px;" data-am-dropdown>
+        <span><a href="#" class="a-font am-dropdown-toggle am-btn">吕哲&nbsp;&nbsp;&nbsp;&nbsp;<span class="am-icon-caret-down"></span></a></span>
+        <ul class="am-dropdown-content">
+            <li><a href="#">Sherry</a></li>
+            <li><a href="#">老纪</a></li>
+            <li><a href="#">译文</a></li>
+        </ul>
+    </div>
+
+</div>
+<div class="col-md-1"></div>
+<div class="col-md-2 body-nav nav-button">
+    <h2 class="parameter"><b>参数设置</b></h2>
+    <form action="#" method="post" class="bs-example bs-example-form">
+        <p class="body-font">Dropout</p>
+        <div id="slider"></div>
+        <p class="body-font" id="dropout">当前dropout值为:0%</p>
+        <p class="body-font">Batch Size</p>
+
+        <div class="am-input-group">
+            <span class="am-input-group-label"></span>
+            <input type="text" class="am-form-field" placeholder="请输入正整数">
+        </div>
+        <p class="body-font">Learning Rate</p>
+        <div class="am-input-group">
+            <span class="am-input-group-label"></span>
+            <input type="text" class="am-form-field" placeholder="请输入非负整数">
+        </div>
+        <p class="body-font">Epochs</p>
+        <div class="am-input-group">
+            <span class="am-input-group-label"></span>
+            <input type="text" class="am-form-field" placeholder="请输入正整数">
+        </div>
+        <p class="body-font">Regularization</p>
+        <select  data-am-selected>
+            <option value="l1">L1</option>
+            <option value="l2">L2</option>
+            <option value="none">None</option>
+        </select>
+        <p class="body-font">Activation</p>
+        <select  data-am-selected>
+            <option value="relu">ReLU</option>
+            <option value="sigmoid">sigmoid</option>
+            <option value="softmax">softmax</option>
+            <option value="maxout">maxout</option>
+        </select>
+        <p class="body-font">Optimization Name</p>
+        <select  data-am-selected>
+            <option value="sgd">Stochastic Gradient Descent</option>
+            <option value="rmsprop">RMSprop</option>
+            <option value="adadelta">Adadelta</option>
+            <option value="adagrad">Adagrad</option>
+        </select>
+        <p class="body-font">Metrics</p>
+        <select data-am-selected>
+            <option value="accuracy">Accuracy</option>
+            <option value="binary_accuracy">Binary Accuracy</option>
+            <option value="mae">Mae</option>
+            <option value="mse">Mse</option>
+        </select>
+        <p class="body-font">Loss</p>
+        <select data-am-selected>
+            <option value="binary_crossentropy">Binary CrossEntropy</option>
+        </select>
+        <p class="body-font">Problem Type</p>
+        <select data-am-selected>
+            <option value="regression">Regression</option>
+            <option value="classification">Classification</option>
+            <option value="sequential">Sequential</option>
+            <option value="tagging">Tagging</option>
+        </select><br><br>
+        <div class="col-md-6 body-nav nav-button">
+            <a href="#" class="a-button am-btn am-radius check-button">重置
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="#" class="a-button am-btn  am-radius check-button">确认
+                <i class="am-icon-check-circle"></i>
+            </a>
+        </div>
+        <div style="height:100px;"></div>
+    </form>
+</div>
+<div class="col-md-6">
+    <div class="body-nav">
+        <button type="button" class="neuron move" id="base-neuron" data-toggle="tooltip" data-placement="top" title="拖动可增加神经元">
+            <b>元</b>
+        </button>&nbsp;&nbsp;&nbsp;
+        <button type="button" class="am-btn am-btn-primary button-size"  data-toggle="tooltip" data-placement="top" title="开始运行"  id="test">
+            <b class="start">Start</b>
+        </button>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" data-toggle="tooltip" data-placement="top" title="保存神经网络结构">保存状态</a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" data-toggle="tooltip" data-placement="top" title="导出网络结构">导出模型</a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" data-toggle="tooltip" data-placement="top" title="查看源代码">查看代码</a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" id="add_layers"
+           data-toggle="tooltip" data-placement="top" title="增加隐藏层">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>&nbsp;&nbsp;&nbsp;
+        <a class="a-button am-btn  am-radius check-button" id="del_layers"
+           data-toggle="tooltip" data-placement="top" title="减少隐藏层">
+            <span class="glyphicon glyphicon-minus"></span>
+        </a>
+    </div><br>
+    <div class="body-nav">
+        <h1 class="body-font" style="font-family: 黑体">隐藏层神经元结构</h1>
+    </div><br><br>
+    <div class="neuron-network center" id="neuron-div">
+        <svg style="height:400px;width:640px;">
+            <g id="path">
+            </g>
+        </svg>
+    </div>
+</div>
+<div class="col-md-3 body-nav">
+    <h2 class="parameter"><b>实时数据</b></h2>
+    <br>
+    <div class="col-md-6 nav-button data-right">
+        <p class="body-font">图ID</p>
+        <p class="body-font">神经元个数</p>
+        <p class="body-font">输入数据量</p>
+        <p class="body-font">Optimizer</p>
+        <p class="body-font">网络类型</p>
+    </div>
+    <div class="col-md-6 data-left">
+        <p class="body-font" id="graph_id">12345</p>
+        <p class="body-font" id="neuron_num">12</p>
+        <p class="body-font" id="input_data_num">7071条</p>
+        <p class="body-font" id="optimizer">Gradient</p>
+        <p class="body-font" id="neuron_class">多层前馈网络</p>
+    </div>
+</div>
+</body>
+</html>
