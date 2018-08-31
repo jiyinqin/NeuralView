@@ -53,7 +53,7 @@
             }
         }
         function get_neuron_num(i){
-            if(i>=hidden_layers.length){
+            if(i>hidden_layers.length){
                 return false;
             }
             var sum_neuron=0;
@@ -66,8 +66,7 @@
             if(i<hidden_layers.length){
                 var sum_neuron=get_neuron_num(i)+1;
                 var all_neuron=get_neuron_num(hidden_layers.length-1)+hidden_layers[hidden_layers.length-1];
-                var new_k=sum_neuron+1;
-                for(var k=sum_neuron;k<=all_neuron;k++){
+                for(var k=all_neuron;k>=sum_neuron;k--){
                     $('#'+k).attr("id",k+1);
                 }
             }
@@ -122,11 +121,25 @@
                         left: left-divPageL,
                         top: top-divPageT,
                     });
+                    var center_left=cloneHtml.offset().left+20;
                     cloneHtml.removeClass('neuron-hover move');
                     cloneHtml.addClass('neuron_1');
-                    var remain=left>=divPageL&&left<=divPageR-40&&top>=divPageT&&top<=divPageB-40;
-                    if(remain){
-                        $('.neuron-network').append(cloneHtml);
+                    var remain=left>=divPageL&&left<=divPageR-40&&top>=divPageT&&top<=divPageB-40;if(remain){
+                        $('svg').before(cloneHtml);
+                        if(center_left<=(3*distance/2)+40){
+                            if(hidden_layers[0]<7) {
+                                var loc = $('#1').offset().left;
+                                cloneHtml.css('left', loc - divPageL);
+                                id_sort(1);
+                                hidden_layers[0] +=1;
+                                cloneHtml.css('top', 60 * (hidden_layers[0] - 1));
+                                cloneHtml.attr('id', hidden_layers[0]);
+                                make_line();
+                            }else{
+                                alert("该层神经元数以达到最大值!");
+                                cloneHtml.remove();
+                            }
+                        }
                     }
                     else{
                         cloneHtml.remove();
@@ -139,15 +152,13 @@
             }
         });
         $(document).ready(function(){
-            var sum_neuron=0;
-            for(var i=0;i<hidden_layers.length;i++){
-                sum_neuron+=hidden_layers[i];
-            }
+            var sum_neuron;
             $('#add_layers').click(function(){
+                sum_neuron=get_neuron_num(hidden_layers.length);
                 if(hidden_layers.length<=5) {
                     var add_neuron_1='<div class="neuron neuron_1 temp-1" style="position:absolute;"></div>';
                     var add_neuron_2='<div class="neuron neuron_1 temp-2" style="position:absolute;"></div>';
-                    var add_neuron_3='<div class="neuron neuron_1 temp-3" style="position:absolute;"></div>'
+                    var add_neuron_3='<div class="neuron neuron_1 temp-3" style="position:absolute;"></div>';
                     $('svg').before(add_neuron_1);
                     $('svg').before(add_neuron_2);
                     $('svg').before(add_neuron_3);
@@ -181,6 +192,7 @@
                     alert('已达到最大隐藏层数！');
             });
             $('#del_layers').click(function(){
+                sum_neuron=get_neuron_num(hidden_layers.length)
                 if(hidden_layers.length>0){
                     for(var i=0;i<hidden_layers[hidden_layers.length-1];i++){
                         var id=sum_neuron-i;
@@ -202,9 +214,6 @@
                 else
                     alert('隐藏层数已为0，不能再减！');
             });
-            $('#test').click(function(){
-                id_sort(2);
-            })
         })
     </script>
 </head>
