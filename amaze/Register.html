@@ -41,7 +41,16 @@
             });
         });
         $(function () { $("[data-toggle='tooltip']").tooltip(); });
-
+        // $(function() {
+        //     $('#am-modal').on('click', function() {
+        //         $('#modal').modal({
+        //             relatedTarget: this,
+        //             onConfirm: function() {
+        //                 alert('hello!');
+        //             }
+        //         });
+        //     });
+        // });
     </script>
 </head>
 <body class="log-div">
@@ -60,11 +69,44 @@
             <input type="text" class="js-pattern-phone reg-input log-font" placeholder="电话" id="phone" required/><br><br>
             <div class="col-md-1"></div>
             <div class="col-md-5">
-            <label class="am-checkbox-inline reg-checkbox">
-                <input type="checkbox" id="protocol" data-am-ucheck required>
-                <span class="log-font">同意服务协议</span>
-            </label>
-        </div>
+                <label class="am-checkbox-inline reg-checkbox">
+                    <input type="checkbox" id="protocol" data-am-ucheck required>
+                    <span class="log-font"><a style="color:white" data-am-modal="{target:'#modal',closeViaDimmer:0}" id="am-modal">同意服务协议</a></span>
+                </label>
+            </div>
+            <!--<div class="am-popup" id="modal">-->
+                <!--<div class="am-popup-inner">-->
+                    <!--<div class="am-popup-hd">-->
+                        <!--<h4 class="am-popup-title">服务协议</h4>-->
+                        <!--<span data-am-modal-close-->
+                              <!--class="am-close">&times;</span>-->
+                    <!--</div>-->
+                    <!--<div class="am-popup-bd">-->
+                        <!--1...<br>-->
+                        <!--2...<br>-->
+                        <!--3...<br>-->
+                        <!--4...<br>-->
+                    <!--</div>-->
+                    <!--<div class="am-modal-footer">-->
+                        <!--<button class="am-modal-btn" data-am-modal-close>确定</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="am-modal am-modal-prompt" tabindex="-1" id="modal">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">服务协议</div>
+                    <div class="am-modal-bd">
+                        <br>
+                        1...<br>
+                        2...<br>
+                        3...<br>
+                        4...<br>
+                    </div>
+                    <div class="am-modal-footer">
+                        <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-5">
             <button type="submit" class="reg-in-button" id="submit">
                 <b style="color:#1e7feb">注册</b>
