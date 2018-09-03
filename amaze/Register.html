@@ -60,13 +60,13 @@
         <h1 class="log-font"><b>神经网络可视化</b></h1>
         <h2 class="log-font">注册您的账户</h2>
         <form action="#" method="post" id="user_reg">
-            <input type="text" class="reg-input log-font" placeholder="用户名" id="user_name"
-                minlength="3" data-toggle="tooltip" data-placement="top" title="至少输入3个字符" required/><br><br>
             <input type="text" class="js-pattern-emails reg-input log-font" placeholder="邮箱" id="user_email" name="emails" required/><br><br>
-            <input type="password" class="js-pattern-password reg-input log-font" placeholder="密码" id="password"
+            <input type="text" class="reg-input log-font" placeholder="用户名" id="user_name" name="username"
+                minlength="3" data-toggle="tooltip" data-placement="top" title="至少输入3个字符" required/><br><br>
+            <input type="password" class="js-pattern-password reg-input log-font" placeholder="密码" id="password" name="password"
                    data-toggle="tooltip" data-placement="top" title="密码由6-20位字符组成" required/><br><br>
             <input type="password" class="reg-input log-font" placeholder="再次输入密码" id="check_password" data-equal-to="#password" required/><br><br>
-            <input type="text" class="js-pattern-phone reg-input log-font" placeholder="电话" id="phone" required/><br><br>
+            <input type="text" class="js-pattern-phone reg-input log-font" placeholder="电话" id="phone" name="password2" required/><br><br>
             <div class="col-md-1"></div>
             <div class="col-md-5">
                 <label class="am-checkbox-inline reg-checkbox">
