@@ -20,6 +20,10 @@ a:hover{text-decoration: none;}
 .neuron-network{background-color: whitesmoke;position:absolute;}
 .neuron-hover{box-shadow:0 0 2px 2px rgb(56, 103, 214);}
 .center{left:50%;margin-left: -320px;}
+.modify-div{position:absolute;top:0;bottom:0;right:0;left:0;margin:auto;height:400px;width:350px;background-color: whitesmoke}
+.modify-input{height:40px;width:300px;border-radius: 10px;border:rgb(56, 103, 214) 2px solid;padding-left: 30px;}
+.modify-button{background-color: rgb(56, 103, 214);color:white;height:40px;width:150px;text-align: center;color:white;
+                border:none;border-radius: 15px;}
 
 
 
