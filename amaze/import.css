@@ -17,7 +17,7 @@ a:hover{text-decoration: none;}
 .data-right{text-align:right;}
 .data-left{text-align:left;}
 .layers{border:1px rgb(56, 103, 214) solid;border-radius: 30px;}
-.neuron-network{background-color: whitesmoke;position:absolute;}
+.neuron-network{background-color: whitesmoke;position:absolute;height:400px;width:640px;}
 .neuron-hover{box-shadow:0 0 2px 2px rgb(56, 103, 214);}
 .center{left:50%;margin-left: -320px;}
 .modify-div{position:absolute;top:0;bottom:0;right:0;left:0;margin:auto;height:400px;width:350px;background-color: whitesmoke}
