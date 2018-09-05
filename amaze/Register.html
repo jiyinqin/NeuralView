@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <script src="js/jQuery.js"></script>
+    <script src="js/jquery.touch-punch.min.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap-theme.css">
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <!--<script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/npm.js"></script>-->
+    <script src="assets/js/amazeui.ie8polyfill.js"></script>
+    <script src="assets/js/amazeui.js"></script>
+    <script src="assets/js/amazeui.widgets.helper.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/handlebars.min.js"></script>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/amazeui.css">
+    <link rel="stylesheet" href="assets/css/amazeui.flat.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="import.css">
+    <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+    <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="log_reg.css">
+    <script src="assets/js/amazeui.widgets.helper.min.js"></script>
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+    <script>
+        $(function(){
+            $('#user_reg').validator({
+                patterns:{
+                    emails:/[a-z0-9-]{1,30}@[a-z0-9-]{1,65}.[a-z]{3}/,
+                    phone:/^((1[3-8][0-9])+\d{8})$/,
+                    password:/^(\w){6,20}$/
+                },
+                inValidClass: 'am-field-error',
+                validClass: 'am-field-valid',
+                patternClassPrefix: 'js-pattern-',
+            });
+        });
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
+    </script>
+</head>
+<body class="log-div">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 body-nav"><br>
+        <a href="#"><img src="logo.png" class="log-logo"></a>
+        <h1 class="log-font"><b>神经网络可视化</b></h1>
+        <h2 class="log-font">注册您的账户</h2>
+        <form action="#" method="post" id="user_reg">
+            <input type="text" class="js-pattern-emails reg-input log-font" placeholder="邮箱" id="user_email" name="emails" required/><br><br>
+            <input type="text" class="reg-input log-font" placeholder="用户名" id="user_name" name="username"
+                minlength="3" data-toggle="tooltip" data-placement="top" title="至少输入3个字符" required/><br><br>
+            <input type="password" class="js-pattern-password reg-input log-font" placeholder="密码" id="password" name="password"
+                   data-toggle="tooltip" data-placement="top" title="密码由6-20位字符组成" required/><br><br>
+            <input type="password" class="reg-input log-font" placeholder="再次输入密码" id="check_password" data-equal-to="#password" required/><br><br>
+            <input type="text" class="js-pattern-phone reg-input log-font" placeholder="电话" id="phone" name="password2" required/><br><br>
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+                <label class="am-checkbox-inline reg-checkbox">
+                    <input type="checkbox" id="protocol" data-am-ucheck required>
+                    <span class="log-font"><a style="color:white" data-am-modal="{target:'#modal',closeViaDimmer:0}" id="am-modal">同意服务协议</a></span>
+                </label>
+            </div>
+            <!--<div class="am-popup" id="modal">-->
+                <!--<div class="am-popup-inner">-->
+                    <!--<div class="am-popup-hd">-->
+                        <!--<h4 class="am-popup-title">服务协议</h4>-->
+                        <!--<span data-am-modal-close-->
+                              <!--class="am-close">&times;</span>-->
+                    <!--</div>-->
+                    <!--<div class="am-popup-bd">-->
+                        <!--1...<br>-->
+                        <!--2...<br>-->
+                        <!--3...<br>-->
+                        <!--4...<br>-->
+                    <!--</div>-->
+                    <!--<div class="am-modal-footer">-->
+                        <!--<button class="am-modal-btn" data-am-modal-close>确定</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="am-modal am-modal-prompt" tabindex="-1" id="modal">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">服务协议</div>
+                    <div class="am-modal-bd">
+                        <br>
+                        1...<br>
+                        2...<br>
+                        3...<br>
+                        4...<br>
+                    </div>
+                    <div class="am-modal-footer">
+                        <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+            <button type="submit" class="reg-in-button" id="submit">
+                <b style="color:#1e7feb">注册</b>
+            </button>
+        </div>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</body>
+</html>
