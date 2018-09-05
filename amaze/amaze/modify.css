@@ -1,0 +1,8 @@
+::-webkit-input-placeholder {color: rgb(56, 103, 214);}
+:-moz-placeholder {color: rgb(56, 103, 214);}
+::-moz-placeholder{color: rgb(56, 103, 214);}
+:-ms-input-placeholder {color: rgb(56, 103, 214);}
+.am-field-valid:focus{border-color:green}
+.am-field-error:focus{border-color:#cf2d27}
+.feedback-input{height:40px;width:100%;border-radius: 10px;border:gray 2px solid;padding-left: 30px;}
+textarea{height:250px;width:100%;border-radius: 10px;border:gray 2px solid;}

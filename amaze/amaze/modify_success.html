@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>验证成功</title>
+    <script src="js/jQuery.js"></script>
+    <script src="js/jquery.touch-punch.min.js"></script>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap-theme.css">
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <!--<script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/npm.js"></script>-->
+    <script src="assets/js/amazeui.ie8polyfill.js"></script>
+    <script src="assets/js/amazeui.js"></script>
+    <script src="assets/js/amazeui.widgets.helper.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/handlebars.min.js"></script>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/amazeui.css">
+    <link rel="stylesheet" href="assets/css/amazeui.flat.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="import.css">
+    <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+    <script src="jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+    <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+    <script src="bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="assets/js/amazeui.widgets.helper.min.js"></script>
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+    <link rel="stylesheet" href="modify.css">
+    <script>
+        $(function(){
+            $('#modification').validator({
+                patterns:{
+                    password:/^(\w){6,20}$/
+                },
+                inValidClass: 'am-field-error',
+                validClass: 'am-field-valid',
+                patternClassPrefix: 'js-pattern-',
+            });
+        });
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
+    </script>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="col-md-1"></div>
+    <div class="col-md-2" style="padding-top:18px;">
+        <h1 style="float:right"><b>神经网络可视化</b></h1>
+    </div>
+    <div class="col-md-2" style="padding-top:19px;">
+        <a href="#"><img src="logo.png" class="am-radius navbar-logo"></a>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-1" style="padding-top:12px;">
+        <a href="#"><p class="user-icon" style="float:right"></p></a>
+    </div>
+    <div class="col-md-2" style="padding-top:14px;" data-am-dropdown>
+        <span><a href="#" class="a-font am-dropdown-toggle am-btn">吕哲&nbsp;&nbsp;&nbsp;&nbsp;<span class="am-icon-caret-down"></span></a></span>
+        <ul class="am-dropdown-content">
+            <li><a href="#">Sherry</a></li>
+            <li><a href="#">老纪</a></li>
+            <li><a href="#">译文</a></li>
+        </ul>
+    </div>
+</div>
+<div class="col-md-4"></div>
+<div class="col-md-4 body-nav">
+    <div style="padding-top:100px;">
+        <h1 class="body-font">验证成功</h1>
+    </div>
+    <br><br><br><br>
+    <form action="#" method="post" id="modification">
+        <input type="password" class="modify-input js-pattern-password" placeholder="输入新密码"
+               id="password" data-toggle="tooltip" data-placement="top" title="新密码由6-20位字符组成" required>
+        <br><br><br>
+        <input type="password" class="modify-input" placeholder="再次输入密码" name="password2" id="password2" data-equal-to="#password">
+        <br><br><br>
+        <button type="submit" class="modify-button"><b>确&nbsp;&nbsp;认</b></button>
+    </form>
+</div>
+</body>
+</html>
