@@ -6,7 +6,7 @@ function makeSVG(tag, attrs) {
         el.setAttribute(k, attrs[k]);
     return el;
 }
-function make_line(){
+function make_line(){  //在画板添加线
     var div_left=$('svg').offset().left;
     var x1=0,y1=200,x2=640,y2=200;
     var div_top=$('svg').offset().top;
@@ -48,6 +48,25 @@ function make_line(){
         }
     }
 }
+function neuron_display(){ //在画板添加neuron
+    $('.display').empty();
+    var length=hidden_layers.length;
+    var neuron_id=1;
+    var distance_col=(640-40*hidden_layers.length)/(hidden_layers.length+1);
+    for(var i=0;i<length;i++){
+        var distance_row=(400-40*hidden_layers[i])/(hidden_layers[i]+1);
+        var left=(i+1)*distance_col+i*40;
+        for(var k=1;k<=hidden_layers[i];k++){
+            var neuron='<div class="neuron neuron_1 temp" style="position:absolute;"></div>';
+            var top=k*distance_row+(k-1)*40;
+            $('.display').append(neuron);
+            $('.temp').attr('id',neuron_id);
+            neuron_id++;
+            $('.temp').css({'left':left,'top':top});
+            $('.temp').removeClass('temp');
+        }
+    }
+}
 function get_neuron_num(i){
     if(i>hidden_layers.length){
         return false;
@@ -85,7 +104,6 @@ $(document).on('mousedown','.move',function(event){
     var divPageR=divPageL+640;
     var divPageB=divPageT+400;
     if(hidden_layers.length!==0){
-
         var _this=$(event.currentTarget);
         oldPageX=event.pageX;
         oldPageY=event.pageY;
@@ -123,7 +141,6 @@ $(document).on('mousedown','.move',function(event){
             var remain=left>=divPageL&&left<=divPageR-40&&top>=divPageT&&top<=divPageB-40;
             if(remain){
                 $('svg').before(cloneHtml);
-
                 var sum_neuron=1;
                 var near_dis=999;
                 var near_loc;
@@ -136,16 +153,13 @@ $(document).on('mousedown','.move',function(event){
                     }
                     sum_neuron+=hidden_layers[i];
                 }
-
                 if(hidden_layers[near_loc-1]<7){
                     sum_neuron=get_neuron_num(near_loc-1)+1;
-                    var loc=$('#'+sum_neuron).offset().left;
-                    cloneHtml.css('left', loc - divPageL);
                     id_sort(near_loc);
                     sum_neuron+=hidden_layers[near_loc-1];
                     hidden_layers[near_loc-1]+=1;
-                    cloneHtml.css('top', 60 * (hidden_layers[near_loc-1] - 1));
-                    cloneHtml.attr('id', sum_neuron);
+                    cloneHtml.remove();
+                    neuron_display();
                     make_line();
 
                 }else{
@@ -167,64 +181,21 @@ $(document).on('mousedown','.move',function(event){
 $(document).ready(function(){
     var sum_neuron;
     $('#add_layers').click(function(){
-        sum_neuron=get_neuron_num(hidden_layers.length);
         if(hidden_layers.length<=5) {
-            var add_neuron_1='<div class="neuron neuron_1 temp-1" style="position:absolute;"></div>';
-            var add_neuron_2='<div class="neuron neuron_1 temp-2" style="position:absolute;"></div>';
-            var add_neuron_3='<div class="neuron neuron_1 temp-3" style="position:absolute;"></div>';
-            $('svg').before(add_neuron_1);
-            $('svg').before(add_neuron_2);
-            $('svg').before(add_neuron_3);
-            var temp_1=sum_neuron+1;
-            var temp_2=sum_neuron+2;
-            var temp_3=sum_neuron+3;
-            $('.temp-1').attr('id',temp_1);
-            $('.temp-2').attr('id',temp_2);
-            $('.temp-3').attr('id',temp_3);
-            sum_neuron+=3;
             hidden_layers.push(3);
-            distance=(640-40*hidden_layers.length)/(hidden_layers.length+1);
-            var left=(hidden_layers.length-1)*40+(hidden_layers.length)*distance;
-            $('.temp-1').css({'left':left+'px','top':0});
-            $('.temp-2').css({'left':left+'px','top':'60px'});
-            $('.temp-3').css({'left':left+'px','top':'120px'});
-            var each_layer=1;
-            for(var i=0;i<hidden_layers.length-1;i++){
-                var temp_left=(i+1)*distance+i*40;
-                for(var j=0;j<hidden_layers[i];j++){
-                    $('#'+each_layer).css('left',temp_left+'px');
-                    each_layer+=1;
-                }
-            }
-            $('.temp-1').removeClass('temp-1');
-            $('.temp-2').removeClass('temp-2');
-            $('.temp-3').removeClass('temp-3');
+            neuron_display();
             make_line();
         }
         else
             alert('已达到最大隐藏层数！');
     });
     $('#del_layers').click(function(){
-        sum_neuron=get_neuron_num(hidden_layers.length)
         if(hidden_layers.length>0){
-            for(var i=0;i<hidden_layers[hidden_layers.length-1];i++){
-                var id=sum_neuron-i;
-                $('#'+id).remove();
-            }
-            sum_neuron-=hidden_layers[hidden_layers.length-1];
             hidden_layers.pop();
-            distance=(640-40*hidden_layers.length)/(hidden_layers.length+1);
-            var each_layer=1;
-            for(var i=0;i<hidden_layers.length;i++){
-                var temp_left=(i+1)*distance+i*40;
-                for(var j=0;j<hidden_layers[i];j++){
-                    $('#'+each_layer).css('left',temp_left+'px');
-                    each_layer+=1;
-                }
-            }
+            neuron_display();
             make_line();
         }
         else
             alert('隐藏层数已为0，不能再减！');
     });
-})
+});
