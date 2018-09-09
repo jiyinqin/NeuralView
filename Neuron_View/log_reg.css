@@ -1,0 +1,15 @@
+.log-div{background: linear-gradient(#659de2,#2066bc) no-repeat;height:100%;width:100%;position: fixed;top: 0;left: 0;}
+.log-logo{height:75px;width:150px;}
+.log-font{color:white}
+.log-input{background-color:#508fdc;height:40px;border:2px white solid;border-radius: 10px;width:300px;padding-left:15px;}
+.log-in-button{height:40px;width:300px;background-color: white;text-align: center;border-radius: 10px;border:0}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {color: white;}
+input:-moz-placeholder, textarea:-moz-placeholder {color:white;}
+input::-moz-placeholder, textarea::-moz-placeholder {color:white;}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:white;}
+.reg-input{background-color:#508fdc;height:35px;border:2px white solid;border-radius: 10px;width:300px;padding-left:15px;}
+.reg-checkbox{border:white;}
+.reg-in-button{height:35px;width:130px;background-color: white;text-align: center;border-radius: 10px;border:0;margin-right:10px;}
+.pass{border:green}
+.am-field-valid:focus{background-color:#508fdc;border-color:green}
+.am-field-error:focus{background-color:#508fdc;border-color:#cf2d27}
